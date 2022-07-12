@@ -5,7 +5,7 @@
 #
 
 # Inherit some common Lineage stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+$(call inherit-product, vendor/arrow/config/common_full_phone.mk)
 
 # Inherit device configuration
 $(call inherit-product, device/google/redfin/aosp_redfin.mk)

@@ -16,22 +16,10 @@
 
 PRODUCT_HARDWARE := redfin
 
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-    ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
-        LOCAL_KERNEL := device/google/redbull-kernel/Image.lz4
-    else
-        LOCAL_KERNEL := device/google/redbull-kernel/vintf/Image.lz4
-    endif
-else
-    LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-endif
-
-PRODUCT_VENDOR_KERNEL_HEADERS := device/google/redbull-kernel/sm7250/kernel-headers
-
 include build/make/target/product/iorap_large_memory_config.mk
 include device/google/redbull/device-common.mk
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/compression.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
 
 # LOCAL_PATH is device/google/redbull before this
 LOCAL_PATH := device/google/redfin
@@ -75,7 +63,7 @@ PRODUCT_COPY_FILES += \
      $(LOCAL_PATH)/audio/acdbdata/adsp_avs_config.acdb:$(TARGET_COPY_OUT_VENDOR)/etc/acdbdata/adsp_avs_config.acdb
 
 # Audio ACDB workspace files for QACT
-ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+ifneq (,$(filter eng, $(TARGET_BUILD_VARIANT)))
 PRODUCT_COPY_FILES += \
      $(LOCAL_PATH)/audio/acdbdata/workspaceFile.qwsp:$(TARGET_COPY_OUT_VENDOR)/etc/acdbdata/workspaceFile.qwsp
 endif
@@ -127,10 +115,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.audio.feature.thermal_listener.enable=true \
 
-ifeq ($(wildcard vendor/google_devices/redfin/proprietary/device-vendor-redfin.mk),)
-    BUILD_WITHOUT_VENDOR := true
-endif
-
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.3-service.redfin
 
@@ -178,7 +162,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/thermal_info_config_$(PRODUCT_HARDWARE).json:$(TARGET_COPY_OUT_VENDOR)/etc/thermal_info_config.json
 
 # Support to disable thermal protection at run time
-ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+ifneq (,$(filter eng, $(TARGET_BUILD_VARIANT)))
     PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/init.hardware.wlc.rc.userdebug:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.$(PRODUCT_PLATFORM).wlc.rc
 endif
@@ -218,6 +202,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Keyboard height ratio and bottom padding in dp for portrait mode
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.com.google.ime.height_ratio=1.2 \
+    ro.com.google.ime.kb_pad_port_b=10
 
 # Bluetooth Tx power caps for redfin
 PRODUCT_COPY_FILES += \

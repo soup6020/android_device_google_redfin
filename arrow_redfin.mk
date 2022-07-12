@@ -20,6 +20,8 @@ PRODUCT_MODEL := Pixel 5
 PRODUCT_NAME := arrow_redfin
 TARGET_MANUFACTURER= : = Google
 
+ARROW_GAPPS=true
+
 DEVICE_MAINTAINER := soup6020
 
 # Boot animation

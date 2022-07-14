@@ -9,7 +9,7 @@ $(call inherit-product, vendor/arrow/config/common.mk)
 
 # Inherit device configuration
 $(call inherit-product, device/google/redfin/aosp_redfin.mk)
-
+$(call inherit-product, vendor/google/redfin/redfin-vendor.mk)
 $(call inherit-product-if-exists, vendor/lawnchair/lawnchair.mk)
 
 include device/google/redfin/device-arrow.mk
